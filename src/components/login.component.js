@@ -2,8 +2,21 @@ import { useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Input from "./common/input.component";
 import loginSchema from "../schema/login.schema";
+import axios from "axios";
 
 const Login = (props) => {
+    async function handleLogin(data) {
+        try {
+            const response = await axios.post('http://localhost:5000/api/login', data);
+            localStorage.setItem("access_token", response.data.access_token);
+            window.location.href = "/";
+
+        } catch(error) {
+            console.log(error);
+            alert('Error happened!');
+        }
+    }
+
     return (
         <div className="d-flex flex-wrap justify-content-center mt-5">
             <div className="card" style={{ width: " 25rem ", height: "auto" }}>
@@ -13,10 +26,9 @@ const Login = (props) => {
                         initialValues={{
                             email: "",
                             password: "",
-                            rememberCheckbox: false,
                         }}
                         onSubmit={(values, actions) => {
-                            console.log(values);
+                            handleLogin(values);
                             actions.setSubmitting(false);
                         }}
                         validationSchema={loginSchema}
@@ -58,21 +70,6 @@ const Login = (props) => {
                                         <div className="invalid-feedback d-block">
                                             <ErrorMessage name="password" />
                                         </div>
-                                    </div>
-
-                                    <div className="form-group mb-3 form-check">
-                                        <label
-                                            className="form-check-label"
-                                            htmlFor="rememberCheckbox"
-                                        >
-                                            Remember User?
-                                        </label>
-                                        <Field
-                                            type="checkbox"
-                                            className="form-check-input"
-                                            id="rememberCheckbox"
-                                            name="rememberCheckbox"
-                                        />
                                     </div>
 
                                     <button

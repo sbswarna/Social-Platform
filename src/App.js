@@ -3,15 +3,19 @@ import Login from "./components/login.component";
 import Navbar from "./components/navbar.component";
 import Signup from "./components/sign-up.component";
 import Home from "./components/home.component";
+import PrivateRoute from "./components/privateRoute";
+import PublicRoute from "./components/publicRoute";
+import Logout from "./components/logout.component";
 
 function App() {
     return (
         <>
             <Navbar/>
             <Switch>
-                <Route path="/login" render={ (props) => <Login {...props}/> }/>
-                <Route path="/sign-up" render={ (props) => <Signup {...props}/> }/>
-                <Route path="/" render={ (props) => <Home {...props}/> }/>
+                <PublicRoute path="/login" component={Login} />
+                <PublicRoute path="/sign-up" component={Signup}/>
+                <PrivateRoute path="/log-out" component={Logout}/>
+                <PrivateRoute path="/" component={Home}/>
             </Switch>
         </>
     );
